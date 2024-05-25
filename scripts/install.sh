@@ -1,17 +1,17 @@
 #!/bin/bash
-# Define the directory path
-SOFIA_DIR="~/.sofia"
+# Path to the directory
+SOFIA_DIR="$HOME/.sofia"
 
 # Check if the directory exists
 if [ -d "$SOFIA_DIR" ]; then
   echo "Directory $SOFIA_DIR exists. Deleting it and its contents..."
-  
+
   # Remove the directory and its contents
   rm -rf "$SOFIA_DIR"
-  
-  # Verify the deletion
+
+  # Verify if the deletion was successful
   if [ ! -d "$SOFIA_DIR" ]; then
-    echo "Directory $SOFIA_DIR was successfully deleted."
+    echo "Directory $SOFIA_DIR has been successfully deleted."
   else
     echo "Failed to delete the directory $SOFIA_DIR."
   fi
