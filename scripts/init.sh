@@ -1,0 +1,1 @@
+git clone https://github.com/felipepimentab/sofia.git ~/.sofia

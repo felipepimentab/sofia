@@ -4,7 +4,7 @@
   "description": "Converts cinejournal info from .txt to .csv",
   "main": "script.js",
   "scripts": {
-    "script": "node script.js"
+    "script": "node ./scripts/run.js"
   },
   "type": "module",
   "keywords": [
