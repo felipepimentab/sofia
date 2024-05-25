@@ -1,8 +1,7 @@
-import { existsSync, mkdir, writeFile, readFile } from 'fs';
-import { it } from 'node:test';
+import {  writeFile, readFile } from 'fs';
 
 (async () => {
-  const INPUT_FILE_PATH = './input.txt';
+  const INPUT_FILE_PATH = process.argv[2];
 
   const text = await new Promise((resolve, reject) => {
     readFile(INPUT_FILE_PATH, (err, data) => {
@@ -17,7 +16,10 @@ import { it } from 'node:test';
 
   const splitRegex = /\n\d+\/629\n/;
   const header = text.split(splitRegex).slice(0,1);
-  console.log("🚀 ~ header:", header)
   const items = text.split(splitRegex).slice(1);
-  console.log("🚀 ~ items:", items.slice(0,2))
+
+  items.forEach(item => {
+    console.log(item);
+    console.log('------------------')
+  });
 })();
