@@ -82,6 +82,9 @@ if [ -d "$SOFIA_DIR" ]; then
   cd $SOFIA_DIR
   git pull
   
+  echo ""
+  echo "Sofia has been successfuly updated."
+
 else
   echo "Directory $SOFIA_DIR does not exist."
 
@@ -89,10 +92,12 @@ else
   cd $HOME
   git clone https://github.com/felipepimentab/sofia.git $SOFIA_DIR
   cd $SOFIA_DIR
+
+  echo ""
+  echo "Sofia has been successfuly installed."
 fi
 
-echo ""
-echo "Sofia has been successfuly installed!"
+
 echo ""
 echo "To add Sofia to the path run:"
 echo "sh $SOFIA_DIR/scripts/path.sh $SOFIA_DIR/scripts"
