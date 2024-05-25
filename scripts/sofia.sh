@@ -40,6 +40,6 @@ function sofia() {
   else
     cd ..
     # Pass the argument to the npm script
-    npm run sofia -- "$1"
+    node run.js -- "$1"
   fi
 }
