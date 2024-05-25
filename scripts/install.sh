@@ -96,5 +96,4 @@ else
 
   echo ""
   echo "Sofia has been successfuly installed."
-  echo "Try running sofia --help for more info"
 fi
