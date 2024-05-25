@@ -1,0 +1,17 @@
+{
+  "name": "sofia",
+  "version": "1.0.0",
+  "description": "Converts cinejournal info from .txt to .csv",
+  "main": "script.js",
+  "scripts": {
+    "script": "node script.js"
+  },
+  "type": "module",
+  "keywords": [
+    "script",
+    "cinema",
+    "journal"
+  ],
+  "author": "Felipe Pimenta",
+  "license": "ISC"
+}
