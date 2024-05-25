@@ -114,7 +114,6 @@ function createFilmFromText(text) {
   );
 }
 
-
 function convertToTSV(data) {
   const header = headers.join('\t')
   const rows = data.map(obj => Object.values(obj).join("\t"));
@@ -123,7 +122,7 @@ function convertToTSV(data) {
 
 (async function () {
   const INPUT_FILE_PATH = process.argv[2];
-  const OUTPUT_FILE_PATH = process.argv[3] || './example/output.tsv';
+  const OUTPUT_FILE_PATH = process.argv[3];
 
   const text = await new Promise((resolve, reject) => {
     readFile(INPUT_FILE_PATH, (err, data) => {
@@ -151,7 +150,7 @@ function convertToTSV(data) {
       if (err) {
         reject(new Error(`\x1b[31mFailed\x1b[0m to create .tsv file.`));
       } else {
-        console.log(`\x1b[32mSuccessfuly\x1b[0m created .tsv file.`);
+        console.log(`\x1b[32mSuccessfuly\x1b[0m created file at ${OUTPUT_FILE_PATH}.`);
         resolve();
       }
     });
