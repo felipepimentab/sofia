@@ -3,7 +3,7 @@
 SOFIA_DIR="~/.sofia"
 
 # Check if the directory exists
-if [ -d "" ]; then
+if [ -d "$SOFIA_DIR" ]; then
   echo "Directory $SOFIA_DIR exists. Deleting it and its contents..."
   
   # Remove the directory and its contents
