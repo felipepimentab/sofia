@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Path to the Sofia directory
 SOFIA_DIR="$HOME/.sofia"
@@ -91,13 +91,10 @@ else
   # Clone git repository into ~/.sofia
   cd $HOME
   git clone https://github.com/felipepimentab/sofia.git $SOFIA_DIR
-  cd $SOFIA_DIR
+  # Add Sofia to source
+  sh $SOFIA_DIR/scripts/source.sh
 
   echo ""
   echo "Sofia has been successfuly installed."
+  echo "Try running sofia --help for more info"
 fi
-
-
-echo ""
-echo "To add Sofia to the path run:"
-echo "sh $SOFIA_DIR/scripts/path.sh $SOFIA_DIR/scripts"
