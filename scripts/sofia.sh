@@ -15,25 +15,21 @@ function sofia() {
     case $opt in
       h)
         show_help
-        exit 0
         ;;
       -)
         case "${OPTARG}" in
           help)
             show_help
-            exit 0
             ;;
           *)
             echo "Invalid option: --${OPTARG}"
             show_help
-            exit 1
             ;;
         esac
         ;;
       \?)
         echo "Invalid option: -$OPTARG"
         show_help
-        exit 1
         ;;
     esac
   done
@@ -41,7 +37,6 @@ function sofia() {
   # Check if the argument is provided
   if [ $# -eq 0 ]; then
     echo "Expected 1 argument for the file path"
-    exit 1
   fi
 
   # Pass the argument to the npm script
