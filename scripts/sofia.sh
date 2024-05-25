@@ -11,6 +11,6 @@ function sofia() {
     # Pass the argument to the npm script
     echo "1 - $1"
     echo "2 - $2"
-    node $SOFIA_DIR/scripts/run.js -- "$1" "$2"
+    node $SOFIA_DIR/scripts/run.js "$1" "$2"
   fi
 }
