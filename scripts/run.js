@@ -26,6 +26,9 @@ function getSameLine(arr, str) {
   return line ? line.split(': ')[1] : '';
 }
 
+/**
+ * @constant headers Array of strings for the table header
+ */
 const headers = [
   'Título atribuído',
   'Outras remetências de título:',
@@ -46,6 +49,9 @@ const headers = [
   'Observações:',
 ]
 
+/**
+ * @class Film
+ */
 class Film {
   constructor(titulo, tituloAlt, categorias, material, ano, pais, cidade, estado, sinopse, termosDescritores, descritoresSecundarios, termosGeograficos, producao, conteudoExaminado, fontesExaminadas, fontesConsultadas, obervacoes) {    
     this.titulo = titulo;
@@ -68,6 +74,11 @@ class Film {
   }
 }
 
+/**
+ * Parses a string into a Film object
+ * @param {string} text unparsed text with the Film's informations
+ * @returns {Film} A Film object with the parsed fields
+ */
 function createFilmFromText(text) {
   /**
    * @description Array with a string for each line
@@ -114,6 +125,11 @@ function createFilmFromText(text) {
   );
 }
 
+/**
+ * @description converts an array of Film objects into a string in the .tsv format
+ * @param {Film[]} data 
+ * @returns 
+ */
 function convertToTSV(data) {
   const header = headers.join('\t')
   const rows = data.map(obj => Object.values(obj).join("\t"));

@@ -97,3 +97,6 @@ else
   echo ""
   echo "Sofia has been successfuly installed."
 fi
+
+# Copy shortcut to Desktop
+cp $SOFIA_DIR/app/Cinejornais.shortcut $HOME/Desktop
