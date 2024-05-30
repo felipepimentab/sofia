@@ -1,4 +1,5 @@
 import {  writeFile, readFile } from 'fs';
+import iconv from 'iconv-lite';
 
 /**
  * Gets the content of the line following the matched line
@@ -140,16 +141,21 @@ function convertToTSV(data) {
   const INPUT_FILE_PATH = process.argv[2];
   const OUTPUT_FILE_PATH = process.argv[3];
 
-  const text = await new Promise((resolve, reject) => {
-    readFile(INPUT_FILE_PATH, (err, data) => {
+  const file = await new Promise((resolve, reject) => {
+    readFile(INPUT_FILE_PATH, { encoding: 'latin1' }, (err, data) => {
       if (err || !data) reject(new Error(`\x1b[31mFailed\x1b[0m to read file at ${INPUT_FILE_PATH}.`));
       else {
         console.log(`\x1b[32mSuccessfuly\x1b[0m read file at ${INPUT_FILE_PATH}`);
-        const str = data.toString('utf-8');
-        resolve(str);
+        resolve(data.toString().split('\n').slice(1).join(''));
       }
     });
   });
+
+  const iso = file
+    .replace(/<[^>]+>/g, '\n') // removes HTML tags
+    .replace(/^\s*$(?:\r\n?|\n)/gm, ''); // removes empty lines
+  const buffer = iconv.decode(iso, 'iso-8859-1');
+  const text = iconv.encode(buffer, 'utf-8');
 
   const splitRegex = /\n\d+\/629\n/;
   const body = text.split(splitRegex).slice(1);
@@ -163,9 +169,8 @@ function convertToTSV(data) {
 
   await new Promise((resolve, reject) => {
     writeFile(OUTPUT_FILE_PATH, tsv, function (err) {
-      if (err) {
-        reject(new Error(`\x1b[31mFailed\x1b[0m to create .tsv file.`));
-      } else {
+      if (err) reject(new Error(`\x1b[31mFailed\x1b[0m to create .tsv file.`));
+      else {
         console.log(`\x1b[32mSuccessfuly\x1b[0m created file at ${OUTPUT_FILE_PATH}.`);
         resolve();
       }
