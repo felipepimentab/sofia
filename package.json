@@ -4,7 +4,8 @@
   "description": "Converts cinejournal info from .txt to .csv",
   "main": "script.js",
   "scripts": {
-    "sofia": "node ./scripts/run.js"
+    "sofia": "node ./scripts/run.js",
+    "compile": "tsc"
   },
   "type": "module",
   "keywords": [
@@ -15,7 +16,13 @@
   "author": "Felipe Pimenta",
   "license": "ISC",
   "dependencies": {
-    "html-to-text": "^9.0.5",
-    "iconv-lite": "^0.6.3"
+    "fs": "^0.0.1-security",
+    "iconv-lite": "^0.6.3",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.13"
   }
 }

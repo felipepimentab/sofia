@@ -93,6 +93,10 @@ else
   git clone https://github.com/felipepimentab/sofia.git $SOFIA_DIR
   # Add Sofia to source
   sh $SOFIA_DIR/scripts/source.sh
+  # Install node dependencies
+  cd $SOFIA_DIR
+  npm install
+  npm run compile
 
   echo ""
   echo "Sofia has been successfuly installed."
