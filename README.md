@@ -1,8 +1,14 @@
 # Sofia 📽️
 
-*Sofia* is a command line tool for parsing raw data imported from the [cinemateca](https://www.cinemateca.org.br/) website into a `.tsv` file. It was created to help with the process of importing data from the cinemateca website into a spreadsheet, as the website only provides an option to export the data as a HTML file with no extension.
+*Sofia* is a command line tool for parsing raw data imported from the [cinemateca](https://www.cinemateca.org.br/) website into a `.tsv` file.
 
-## 🛠️ Installing Sofia
+It was created to help with the process of importing data from the cinemateca website into a spreadsheet, as the website only provides an option to export the data as a HTML file with no extension.
+
+---
+
+## 🛠️ Installation
+
+### Automated (MacOS)
 
 To install *Sofia* on macOS, run the following command:
 
@@ -10,39 +16,60 @@ To install *Sofia* on macOS, run the following command:
 curl -sSL https://raw.githubusercontent.com/felipepimentab/sofia/main/scripts/install.sh | sh
 ```
 
-> This script will install [HomeBrew](https://brew.sh), [Git](https://git-scm.com) and [Node](https://nodejs.org) on your machine, if not already installed.
+This will install [HomeBrew](https://brew.sh), [Git](https://git-scm.com), and [Node.js](https://nodejs.org) if missing, then globally link the `sofia` command.
 
-After running the command, close and reopen the terminal to update the *path*.
+After running it, close and reopen the terminal to update the *path*.
 
-## 🚀 Using Sofia
+### Manual
 
-To use *Sofia* you must first download the raw text file from the cinemateca website. The file has no extension and should be saved that way, because giving it an extension could cause issues with the text encoding.
+First, make sure you have the following pre-requisites:
+
+- [Node.js](https://nodejs.org)
+- [Git](https://git-scm.com)
+
+To install *Sofia* manually, simply clone this repository, install its dependencies with NPM, and add `sofia` to the terminal path.
+
+## 🚀 Usage
+
+### Command
+
+```sh
+Usage: sofia [options] <input-file> [output-file.tsv]
+
+Arguments:
+  input-file          Path to the raw file downloaded from cinemateca
+  output-file.tsv     (optional) Destination TSV file (default: ./output.tsv)
+
+Options:
+  -h, --help          Display this help message
+  -d, --debug         Dump intermediate processing to ./temp/debug.txt
+```
+
+### Converting files
+
+To use *Sofia* you must first download the raw text file from the cinemateca website. The file has no extension and should be saved that way, because giving it an extension could cause issues with the text encoding. When dowloading, make sure you select the option to download as HTML.
 
 Save it in a path close to the home path, with no spaces or accents.
 
-Make sure *Sofia* has been installed, then run the following command:
+Make sure *Sofia* has been installed, then run the `sofia` command as instructed.
+
+For example, supposed the file was saved in the **Downloads** ⬇️ folder with the name `iah`, and you want the output to be saved as `output.tsv` in the **Documents** 📄 folder. Then, run:
 
 ```sh
-sofia <path_to_input> <path_to_output.tsv>
+sofia ~/Downloads/iah ~/Documents/output.tsv
 ```
-
-Change the values inside `< >` to match the actual paths to your files.
-
-For example, if the file is saved in the **Documents** 📄 folder with the name `lista-de-cinejornais`, the first argument will be `./Documents/lista-de-cinejornais`, as the terminal already opens in the home path (in this case, `./` is the home path 🏠).
-
-The second argument is optional and indicates the path where the `.tsv` file will be saved and its name. If not passed, the file will be saved in the current directory with the name `output.tsv`.
 
 ## 🔩 How it works
 
 *Sofia* uses Node.js to read a raw text file as downloaded from the cinemateca website, adjust its text encoding, parse it, extract relevant information and create a `.tsv` file containing a list of films.
 
-### File Input and Encoding
+### Encoding
 
-The input text file is first read as a file with the **Latin-1** encoding, then converted to **ISO-8859-1**, then converted to **UTF-8**. This two-step convertion makes sure that no information is lost.
+The input text file is first read as a file with the **Latin-1** encoding, then decoded to **ISO-8859-1**, then encoded to **UTF-8**. This two-step convertion makes sure that no information is lost.
 
 Below is a snippet of what the data should look like at this point. Some relevant information is highlighted for better visualization.
 
-![File Input and Encoding](./assets/ex-1.jpg)
+![Snippet 1: Raw text after UTF-8 conversion](./assets/ex-1.jpg)
 
 ### Parsing and Transformation
 
@@ -50,7 +77,7 @@ The raw text (now properly encoded with **UTF-8**) is imported as a file, then c
 
 The process includes several transformations, such as removing HTML tags and empty lines.
 
-![File Input and Encoding](./assets/ex-2.jpg)
+![Snippet 2: Text after parsing](./assets/ex-2.jpg)
 
 ### Separating and Processing Each Film
 
@@ -67,7 +94,7 @@ The image below simbolizes how the identification of the atributes is done.
 
 The result is an array of **Film** objects.
 
-![File Input and Encoding](./assets/ex-3.jpg)
+![Snippet 3: Film object creation](./assets/ex-3.jpg)
 
 ### TSV Conversion and Output Generation
 
