@@ -1,40 +1,78 @@
-# Sofia
+# Sofia 📽️
 
-> Conjunto de scripts para converter dados fornecidos pelo site da cinemateca em um arquivo `.tsv` importável pelo sheets, excel, etc.
+*Sofia* is a command line tool for parsing raw data imported from the [cinemateca](https://www.cinemateca.org.br/) website into a `.tsv` file. It was created to help with the process of importing data from the cinemateca website into a spreadsheet, as the website only provides an option to export the data as a HTML file with no extension.
 
-## 🛠️ Instalando sofia
-Para instalar **sofia** basta abrir o terminal e executar o comando a seguir.
+## 🛠️ Installing Sofia
 
-```
+To install *Sofia* on macOS, run the following command:
+
+```sh
 curl -sSL https://raw.githubusercontent.com/felipepimentab/sofia/main/scripts/install.sh | sh
 ```
 
-Após a execução do comando, feche e abra o terminal para atualizar o *path*.
+> This script will install [HomeBrew](https://brew.sh), [Git](https://git-scm.com) and [Node](https://nodejs.org) on your machine, if not already installed.
 
-## 🚀 Usando sofia
+After running the command, close and reopen the terminal to update the *path*.
 
-Para usar é preciso fornecer um arquivo `.txt`. Para gerar um a partir do HTML gerado pelo site da cinemateca o jeito mais fácil é seguindo o passo a passo a seguir:
+## 🚀 Using Sofia
 
-- Baixe o arquivo HTML do site da cinemateca;
-- Clique com o botão direito no arquivo baixado;
-- Selecione a opção **Abrir Com**;
-- Selecione o **Editor de Texto.app** (nativo do Mac);
-- Apague a primeira linha (`Content-type: text/html; charset= iso-8859-1`);
-- Salve e feche a janela do **Editor de Texto**;
-- Abra novamente o mesmo arquivo com o **Editor de Texto** (talvez demore um pouco);
-- Dessa vez o editor vai abrir o arquivo formatado como texto rico e com a acentuação correta;
-- Copie o arquivo inteiro com `cmd+A` e `cmd+C`;
-- Ainda no editor de texto, no menu superior, clique em **Arquivo > Novo**;
-- Cole (`cmd+V`) o texto copiado na nova janela aberta;
-- Salve o novo arquivo com um nome simples, sem maiúsculas, acentos ou espaços (confira se extensão do arquivo está como `.txt` e a codificação do texto está como `UTF-8`);
-- (Recomendo salvar esse arquivo em uma pasta fácil, de preferência a ***Home*** 🏠).
+To use *Sofia* you must first download the raw text file from the cinemateca website. The file has no extension and should be saved that way, because giving it an extension could cause issues with the text encoding.
 
-Para usar **sofia** para converter o arquivo `.txt` em `.tsv`, abra o terminal e execute o comando a seguir, substituindo os termos entre `< >`.
+Save it in a path close to the home path, with no spaces or accents.
 
-```
-sofia <path_to_input.txt> <path_to_output.tsv(optional)>
+Make sure *Sofia* has been installed, then run the following command:
+
+```sh
+sofia <path_to_input> <path_to_output.tsv>
 ```
 
-Por exemplo, se o arquivo `.txt` foi salvo na pasta **Documentos** 📄 com o nome `lista-de-cinejornais.txt` então o primeiro termo será `./Documents/lista-de-cinejornais.txt`, uma vez que o terminal já abre na pasta ***Home*** 🏠 por padrão (neste caso, `./` é a pasta ***Home*** 🏠).
+Change the values inside `< >` to match the actual paths to your files.
 
-O segundo termo é opicional e representa o caminho onde será salvo o arquivo gerado e seu nome. Por exemplo, para salvar o arquivo como `tabela-de-cinejornais.tsv` na pasta **Documentos** 📄, o segundo termo seria `./Documents/tabela-de-cinejornais.tsv`. Se não for passado o segundo termo o arquivo gerado será salvo com o nome e caminho *default*: com o nome `output.tsv` na pasta  ***Home*** 🏠.
+For example, if the file is saved in the **Documents** 📄 folder with the name `lista-de-cinejornais`, the first argument will be `./Documents/lista-de-cinejornais`, as the terminal already opens in the home path (in this case, `./` is the home path 🏠).
+
+The second argument is optional and indicates the path where the `.tsv` file will be saved and its name. If not passed, the file will be saved in the current directory with the name `output.tsv`.
+
+## 🔩 How it works
+
+*Sofia* uses Node.js to read a raw text file as downloaded from the cinemateca website, adjust its text encoding, parse it, extract relevant information and create a `.tsv` file containing a list of films.
+
+### File Input and Encoding
+
+The input text file is first read as a file with the **Latin-1** encoding, then converted to **ISO-8859-1**, then converted to **UTF-8**. This two-step convertion makes sure that no information is lost.
+
+Below is a snippet of what the data should look like at this point. Some relevant information is highlighted for better visualization.
+
+![File Input and Encoding](./assets/ex-1.jpg)
+
+### Parsing and Transformation
+
+The raw text (now properly encoded with **UTF-8**) is imported as a file, then converted to a string, which is the input for the parsing and transformation process.
+
+The process includes several transformations, such as removing HTML tags and empty lines.
+
+![File Input and Encoding](./assets/ex-2.jpg)
+
+### Separating and Processing Each Film
+
+The text is split into individual film records using a regex pattern that matches number patterns (e.g., "45/14231")
+
+Each film record is processed to create a **Film** object. First an array is created by spliting the text on line breaks. Predefined headers are used to identify each attribute, which are then formatted, if needed.
+
+The image below simbolizes how the identification of the atributes is done.
+
+- The purple lines represent the number pattern used to separate each film;
+- The red lines represent information that is not relevant;
+- The bold blue lines represent an identified header;
+- The green lines represent a found attribute based on its header.
+
+The result is an array of **Film** objects.
+
+![File Input and Encoding](./assets/ex-3.jpg)
+
+### TSV Conversion and Output Generation
+
+The **Film** objects array is transformed into a TSV-formatted string, with each film record on a separate line and fields separated by tabs. The first line is a header row, containing the predefined headers.
+
+The TSV-formatted string is written to a file, which is the final output of the process.
+
+The process also writes a debug file at `./temp/debug.txt` with the intermediate processed text.

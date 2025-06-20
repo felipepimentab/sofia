@@ -2,9 +2,10 @@ import {  writeFile, readFile } from 'fs';
 export type Film = string[];
 
 /**
- * 
- * @param path 
- * @returns 
+ * Reads a file with Latin-1 encoding and returns its contents as a string.
+ * @param path - The absolute path to the file to be read
+ * @returns A promise that resolves with the file contents as a string
+ * @throws Error if the file cannot be read
  */
 export const readLatin1File = async (path: string) => {
   return await new Promise<string>((resolve, reject) => {
@@ -19,10 +20,11 @@ export const readLatin1File = async (path: string) => {
 };
 
 /**
- * 
- * @param path 
- * @param data 
- * @returns 
+ * Writes data to a file at the specified path.
+ * @param path - The absolute path where the file should be written
+ * @param data - The string content to write to the file
+ * @returns A promise that resolves when the file has been written
+ * @throws Error if the file cannot be written
  */
 export const writeFileAt = async (path: string, data: string) => {
   return await new Promise<void>((resolve, reject) => {
@@ -37,10 +39,11 @@ export const writeFileAt = async (path: string, data: string) => {
 };
 
 /**
- * 
- * @param arr 
- * @param str 
- * @returns 
+ * Extracts an attribute value from an array of strings based on a header string.
+ * Handles cases where the attribute value might span multiple elements.
+ * @param arr - Array of strings containing the film record data
+ * @param str - The header string to search for
+ * @returns The extracted attribute value, or an empty string if not found
  */
 export const getAttributeFromHeader = (arr: string[], str: string): string => {
   const i = arr.findIndex(el => el.includes(str));
@@ -54,9 +57,11 @@ export const getAttributeFromHeader = (arr: string[], str: string): string => {
 }
 
 /**
- * Parses a string into a Film object
- * @param text unparsed text with the Film's informations
- * @returns An array with the parsed fields
+ * Parses a raw text string containing film information into a structured Film object.
+ * Processes the text by splitting it into lines and extracting relevant attributes
+ * based on predefined headers.
+ * @param text - Unparsed text containing the film's information
+ * @returns An array of strings representing the film's attributes in a structured format
  */
 export const createFilmFromText = (text: string): Film => {
   /**
@@ -74,7 +79,10 @@ export const createFilmFromText = (text: string): Film => {
 }
 
 /**
- * @description converts an array of Film objects into a string in the .tsv format
+ * Converts an array of Film objects into a TSV (Tab-Separated Values) formatted string.
+ * Creates a header row using predefined headers and formats each film's data as a tab-separated row.
+ * @param films - Array of Film objects to convert
+ * @returns A string containing the TSV formatted data with headers
  */
 export const convertToTSV = (films: Film[]): string => {
   const header = headers.join('\t')
@@ -84,7 +92,10 @@ export const convertToTSV = (films: Film[]): string => {
 }
 
 /**
- * @constant headers Array of strings for the table header
+ * Predefined headers for the film database table.
+ * These headers define the structure of both the input parsing and output TSV format.
+ * @constant
+ * @type {string[]}
  */
 export const headers: string[] = [
   'Título atribuído',
@@ -115,7 +126,10 @@ export const headers: string[] = [
 ];
 
 /**
- * @constant ignore Array of string to be ingored when searching for attributes
+ * List of strings that should be ignored when searching for attributes in the film data.
+ * These strings are typically section headers or formatting markers that shouldn't be included in the actual data.
+ * @constant
+ * @type {string[]}
  */
 const ignore: string[] = [
   ...headers,
